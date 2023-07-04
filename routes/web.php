@@ -30,8 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-
-    Route::get('/permissions', [PermissionController::class, 'index']);
+    Route::group(['middleware' => ['role:Super Admin|Admin']], function () {
+        Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+        Route::get('/permissions/{user}', [PermissionController::class, 'show'])->name('permissions.show');
+        Route::patch('/permissions/{user}', [PermissionController::class, 'update'])->name('permissions.update');
+        Route::delete('/permissions/{user}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+    });
 });
 
+
+
 require __DIR__.'/auth.php';
+
+

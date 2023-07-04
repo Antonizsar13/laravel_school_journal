@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(Users\CreateRoleGuest::class);
         $this->call(Users\CreateRoleStudent::class);
         $this->call(Users\CreateRoleTeacher::class);
+        $this->call(Users\CreateRoleAdmin::class);
     }
 }

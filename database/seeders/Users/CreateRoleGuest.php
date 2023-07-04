@@ -13,7 +13,7 @@ class CreateRoleGuest extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'guest' ,
+        Role::create(['name' => 'Guest' ,
         ]);
     }
 }

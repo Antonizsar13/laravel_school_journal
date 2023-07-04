@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class CreateRoleStudent extends Seeder
+class CreateRoleAdmin extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class CreateRoleStudent extends Seeder
     public function run(): void
     {
         Role::create([
-            'name' => 'Student',
+            'name' => 'Admin',
         ]);
     }
 }

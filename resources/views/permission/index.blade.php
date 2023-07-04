@@ -14,34 +14,38 @@
                             {{ __('List users:') }}
                         </h2>
                     </header>
+                    <div class="flex flex-col" >
+                    <div class="overdlow-x-auto sm:-mx-6 lg:-mx-8" >
+                    <div class="inline-block min-w-full py-2 sm:px-6 px-8">
 
-                    <div></div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First name</th>
-                            <th scope="col">Fater name</th>
-                            <th scope="col">Last name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             @foreach ($users as $user)
-                            <tr>
-                            <th scope="row">{{$user->id}}</th>
-                            <td>{{$user->first_name}}</td>
-                            <td>{{$user->father_name}}</td>
-                            <td>{{$user->last_name}}</td>
-                            <td>{{$user->email}}</td>
-                            <td>{{$user->role}}</td>
-                            <td><a href="http://htmlbook.ru/samhtml/ssylki">123</a></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        <table class="min-w-full text-left text-sm font-light">
+                            <thead class="border-b font-medium dark:border-neutral-500">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4" >#</th>
+                                    <th scope="col" class="px-6 py-4" >First name</th>
+                                    <th scope="col" class="px-6 py-4">Fater name</th>
+                                    <th scope="col" class="px-6 py-4">Last name</th>
+                                    <th scope="col" class="px-6 py-4">Email</th>
+                                    <th scope="col" class="px-6 py-4">Role</th>
+                                    <th scope="col" class="px-6 py-4">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                <tr class="border-b dark:border-neutral-500">
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium" >{{$user->id}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->first_name}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->father_name}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->last_name}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->email}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->role}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 text-xl" ><a href="/permissions/{{{$user->id}}}">&#9998</a></td>
+                                </tr>
+                                @endforeach
+                            </tbody>
                         </table>
+                    </div>
+                    </div>
                     </div>
                 </div>
             </div>
