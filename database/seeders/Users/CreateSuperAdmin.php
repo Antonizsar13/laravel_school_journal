@@ -28,6 +28,7 @@ class CreateSuperAdmin extends Seeder
             'password' => Hash::make(1),
         ]);
 
+        $user->removeRole('guest');
         $user->assignRole($role);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicDisciplineController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::resource('discipline', AcademicDisciplineController::class);
 
     Route::group(['middleware' => ['role:Super Admin|Admin']], function () {
         Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');

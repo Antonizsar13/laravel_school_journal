@@ -46,9 +46,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    public static function boot(){
+        parent::boot();
 
-    // public function roles(){
+        self::created(function ($model){
+            $model->assignRole('guest');
+        });
+    }
 
-    //     return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id');
-    // }
+    public function academicDisciplines(){
+        return $this->belongsToMany(AcademicDiscipline::class);
+    }
 }
