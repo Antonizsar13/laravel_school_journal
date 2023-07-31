@@ -38,7 +38,7 @@
                                     <td class="whitespace-nowrap px-6 py-4" >{{$user->father_name}}</td>
                                     <td class="whitespace-nowrap px-6 py-4" >{{$user->last_name}}</td>
                                     <td class="whitespace-nowrap px-6 py-4" >{{$user->email}}</td>
-                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->role}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->roles[0]->name}}</td>
                                     <td class="whitespace-nowrap px-6 py-4 text-xl" ><a href="/permissions/{{{$user->id}}}">&#9998</a></td>
                                 </tr>
                                 @endforeach

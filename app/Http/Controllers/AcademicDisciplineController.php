@@ -16,8 +16,8 @@ class AcademicDisciplineController extends Controller
     public function index()
     {
 
-        $academicDiscipline = AcademicDiscipline::all();
-        
+        $academicDiscipline = AcademicDiscipline::with('users')->get();
+
         return view('discipline.index', ['disciplines' => $academicDiscipline]);
     }
 
@@ -27,10 +27,9 @@ class AcademicDisciplineController extends Controller
     public function create()
     {
 
-        $teachers = DB::table('users')
-        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')->where('roles.name', '=', 'teacher')
-        ->select('users.*', 'roles.name as role')->get();
+        $teachers = User::whereHas('roles', function ($query) {
+            $query->where('name', 'teacher');
+        })->get();
 
         return view('discipline.create', ['teachers' => $teachers]);
     }
@@ -40,10 +39,9 @@ class AcademicDisciplineController extends Controller
      */
     public function store(StoreAcademicDisciplineRequest $request)
     {
-        
+
         $newdiscipline = AcademicDiscipline::create($request->validated());
-        foreach ($request->validated()['teachers'] as $id)
-        {
+        foreach ($request->validated()['teachers'] as $id) {
             $user = User::find($id);
             $newdiscipline->users()->attach($user);
         }
@@ -56,37 +54,56 @@ class AcademicDisciplineController extends Controller
      */
     public function show(AcademicDiscipline $academicDiscipline)
     {
-
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AcademicDiscipline $academicDiscipline)
-    {   
+    public function edit(int $academicDiscipline)
+    {
 
-        $academicDiscipline = AcademicDiscipline::find('1');
-        $teachers = DB::table('users')
-        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')->where('roles.name', '=', 'teacher')
-        ->select('users.*', 'roles.name as role')->get();
+        $academicDiscipline = AcademicDiscipline::find($academicDiscipline); //!!!!!!!!!!!!
 
-        return view('discipline.edit', ['discipline' => $academicDiscipline,'teachers' => $teachers]);
+        $teachersDiscipline =$academicDiscipline->users()->get();//все но можно только учителе сделать потом
+        
+        $teachers = User::whereHas('roles', function ($query) {
+            $query->where('name', 'teacher');
+        })->get();
+
+        return view('discipline.edit', ['discipline' => $academicDiscipline, 'teachers' => $teachers, 'teachersDiscipline' => $teachersDiscipline   ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAcademicDisciplineRequest $request, AcademicDiscipline $academicDiscipline)
+    public function update(UpdateAcademicDisciplineRequest $request, int $academicDiscipline)
     {
-        dd('123');
+        $academicDiscipline = AcademicDiscipline::find($academicDiscipline);//!!!!!!!!!!!!!!
+        
+        $academicDiscipline->fill($request->validated());
+        $academicDiscipline->save();
+        
+        $users = array();
+        if(array_key_exists('teachers', $request->validated())){
+            
+            foreach ($request->validated()['teachers'] as $id) {
+                array_push($users, $id);
+            }
+        }
+            $academicDiscipline->users()->sync($users);
+        
+        return AcademicDisciplineController::index();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AcademicDiscipline $academicDiscipline)
+    public function destroy(int $academicDiscipline)
     {
-        //
+        
+        $academicDiscipline = AcademicDiscipline::find($academicDiscipline); //!!!!!!!!!!!!!!
+        $academicDiscipline->users()->sync(array());//костыль
+        $academicDiscipline->delete();
+        return AcademicDisciplineController::index();
     }
 }

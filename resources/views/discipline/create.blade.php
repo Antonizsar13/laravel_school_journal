@@ -22,16 +22,16 @@
                                         </p>
                                     <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"/>
                                 </div>
-                            
-                                <div>
-                                    <x-input-label for="teachers" :value="__('Choose teachers, whom lead this discipline')" />
-                                    <select multiple id="teachers" name="teachers[]" >
-                                        @foreach ($teachers as $teacher) 
-                                            <option  type="text" value={{$teacher->id}}>{{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
 
+
+                                <div>
+                                    <h3>Teachers:</h3>
+                                    @foreach ($teachers as $teacher)
+                                        <input type="checkbox" id={{$teacher->id}} name='teachers[]' value={{$teacher->id}}>
+                                        <label for={{$teacher->id}}>{{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name}}</label>
+                                        <br>
+                                    @endforeach
+                                </div>
                                 <div class="flex items-center gap-4">
                                     <x-primary-button>{{ __('Save') }}</x-primary-button>
                                 </div>
