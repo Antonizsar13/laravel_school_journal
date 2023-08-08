@@ -23,7 +23,8 @@ class StoreAcademicDisciplineRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255', 'min:2'],
-            'teachers' => ['array']
+            'teachers' => ['array'],
+            'learningClasses' => ['array'],
         ];
     }
 }

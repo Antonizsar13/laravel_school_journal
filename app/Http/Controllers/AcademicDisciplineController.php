@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAcademicDisciplineRequest;
 use App\Http\Requests\UpdateAcademicDisciplineRequest;
 use App\Models\AcademicDiscipline;
+use App\Models\LearningClass;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,7 @@ class AcademicDisciplineController extends Controller
     public function index()
     {
 
-        $academicDiscipline = AcademicDiscipline::with('users')->get();
+        $academicDiscipline = AcademicDiscipline::with('users','learningClasses')->get();
 
         return view('discipline.index', ['disciplines' => $academicDiscipline]);
     }
@@ -31,7 +32,9 @@ class AcademicDisciplineController extends Controller
             $query->where('name', 'teacher');
         })->get();
 
-        return view('discipline.create', ['teachers' => $teachers]);
+        $learningClasses = LearningClass::all();
+
+        return view('discipline.create', ['teachers' => $teachers, 'learningClasses' => $learningClasses]);
     }
 
     /**
@@ -40,10 +43,15 @@ class AcademicDisciplineController extends Controller
     public function store(StoreAcademicDisciplineRequest $request)
     {
 
-        $newdiscipline = AcademicDiscipline::create($request->validated());
+        $newDiscipline = AcademicDiscipline::create($request->validated());
         foreach ($request->validated()['teachers'] as $id) {
             $user = User::find($id);
-            $newdiscipline->users()->attach($user);
+            $newDiscipline->users()->attach($user);
+        }
+
+        foreach ($request->validated()['learningClasses'] as $id) {
+            $learningClass = LearningClass::find($id);
+            $newDiscipline->learningClasses()->attach($learningClass);
         }
 
         return AcademicDisciplineController::index();
@@ -70,7 +78,16 @@ class AcademicDisciplineController extends Controller
             $query->where('name', 'teacher');
         })->get();
 
-        return view('discipline.edit', ['discipline' => $academicDiscipline, 'teachers' => $teachers, 'teachersDiscipline' => $teachersDiscipline   ]);
+        $learningClassesDiscipline = $academicDiscipline->learningClasses()->get();
+
+        $learningClasses = LearningClass::all();
+
+
+        return view('discipline.edit', ['discipline' => $academicDiscipline,
+                                    'teachers' => $teachers,
+                                    'teachersDiscipline' => $teachersDiscipline,
+                                    'learningClassesDiscipline' => $learningClassesDiscipline,
+                                    'learningClasses'  => $learningClasses]);
     }
 
     /**
@@ -91,7 +108,17 @@ class AcademicDisciplineController extends Controller
             }
         }
             $academicDiscipline->users()->sync($users);
-        
+
+
+        $learningClasses = array();
+        if (array_key_exists('learningClasses', $request->validated())) {
+            foreach ($request->validated()['learningClasses'] as $id) {
+                array_push($learningClasses, $id);
+            }
+        }
+        $academicDiscipline->learningClasses()->sync($learningClasses);
+
+
         return AcademicDisciplineController::index();
     }
 
@@ -102,7 +129,8 @@ class AcademicDisciplineController extends Controller
     {
         
         $academicDiscipline = AcademicDiscipline::find($academicDiscipline); //!!!!!!!!!!!!!!
-        $academicDiscipline->users()->sync(array());//костыль
+        $academicDiscipline->users()->sync(array()); //костыль
+        $academicDiscipline->learningClasses()->sync(array());//костыль
         $academicDiscipline->delete();
         return AcademicDisciplineController::index();
     }

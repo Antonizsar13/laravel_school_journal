@@ -20,24 +20,42 @@
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <div class="max-w-xl">
-                         <div>
-                                    <h3>Teachers:</h3>
-                                    @foreach ($teachers as $teacher)
-                                        <input type="checkbox" 
-                                            id={{$teacher->id}} 
-                                            name='teachers[]' 
-                                            value={{$teacher->id}} 
-                                            @foreach ($teachersDiscipline as $teacherDiscipline)
-                                                @if($teacherDiscipline->id == $teacher->id) 
-                                                    checked 
-                                                @endif
-                                            @endforeach>
-                                        <label for={{$teacher->id}}>{{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name}}</label>
-                                        <br>
-                                    @endforeach
-                                </div>
+                        <h3>Teachers:</h3>
+                        @foreach ($teachers as $teacher)
+                            <input type="checkbox" 
+                                id={{$teacher->id}} 
+                                name='teachers[]' 
+                                value={{$teacher->id}} 
+                                @foreach ($teachersDiscipline as $teacherDiscipline)
+                                    @if($teacherDiscipline->id == $teacher->id) 
+                                        checked 
+                                    @endif
+                                @endforeach>
+                            <label for={{$teacher->id}}>{{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name}}</label>
+                            <br>
+                        @endforeach
                     </div>
                 </div>
+
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        <h3>Classes:</h3>
+                        @foreach ($learningClasses as $learningClass)
+                            <input type="checkbox" 
+                                id={{$learningClass->id}} 
+                                name='learningClasses[]' 
+                                value={{$learningClass->id}} 
+                                @foreach ($learningClassesDiscipline as $learningClassDiscipline)
+                                    @if($learningClassDiscipline->id == $learningClass->id) 
+                                        checked 
+                                    @endif
+                                @endforeach>
+                            <label for={{$learningClass->id}}>{{$learningClass->number . ' ' . $learningClass->specialization}}</label>
+                            <br>
+                        @endforeach
+                    </div>
+                </div>
+
                 <div class="flex items-center gap-4">
                     <x-primary-button>{{ __('Save') }}</x-primary-button>
                 </div>

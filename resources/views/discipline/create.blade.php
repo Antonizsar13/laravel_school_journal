@@ -32,6 +32,16 @@
                                         <br>
                                     @endforeach
                                 </div>
+
+
+                                <div>
+                                    <h3>Classes:</h3>
+                                    @foreach ($learningClasses as $learningClass)
+                                        <input type="checkbox" id={{$learningClass->id}} name='learningClasses[]' value={{$learningClass->id}}>
+                                        <label for={{$learningClass->id}}>{{$learningClass->number . ' ' . $learningClass->specialization}}</label>
+                                        <br>
+                                    @endforeach
+                                </div>
                                 <div class="flex items-center gap-4">
                                     <x-primary-button>{{ __('Save') }}</x-primary-button>
                                 </div>

@@ -17,19 +17,26 @@
                     </x-nav-link>
                 </div>
 
+
+                @role('Super Admin|Admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('discipline.index')" :active="request()->routeIs('discipline.index')">
                         {{ __('Discipline') }}
                     </x-nav-link>
                 </div>
+                
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('learning_class.index')" :active="request()->routeIs('learning_class.index')">
+                        {{ __('Classes') }}
+                    </x-nav-link>
+                </div>
 
-
-                @role('Super Admin|Admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                         {{ __('Profiles setting') }}
                     </x-nav-link>
                 </div>
+            
                 @endrole
             </div>
 

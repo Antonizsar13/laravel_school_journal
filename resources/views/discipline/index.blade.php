@@ -25,7 +25,7 @@
                                     <th scope="col" class="px-6 py-4" >#</th>
                                     <th scope="col" class="px-6 py-4" >Discipline name</th>
                                     <th scope="col" class="px-6 py-4" >Teachers</th>
-                                    <th scope="col" class="px-6 py-4" >Class</th>
+                                    <th scope="col" class="px-6 py-4" >Classes</th>
                                     <th scope="col" class="px-6 py-4" >Edit</th>
                                 </tr>
                             </thead>
@@ -34,12 +34,16 @@
                                 <tr class="border-b dark:border-neutral-500">
                                     <td class="whitespace-nowrap px-6 py-4 font-medium" >{{$discipline->id}}</td>
                                     <td class="whitespace-nowrap px-6 py-4" >{{$discipline->name}}</td>
-                                    <td class="whitespace-nowrap px-6 py-4" >  
+                                    <td class="px-6 py-4" >  
                                         @foreach ($discipline->users as $teacher)
                                         {{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name .', '}}   
                                         @endforeach 
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4" >{{'In work'}}</td>
+                                    <td class="px-6 py-4" >  
+                                        @foreach ($discipline->learningClasses as $learningClass)
+                                        {{$learningClass->number . ' ' . $learningClass->specialization . ', '}}  
+                                        @endforeach 
+                                    </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-xl" ><a href="{{route('discipline.edit', $discipline)}}">&#9998</a></td>
 
                                 </tr>
