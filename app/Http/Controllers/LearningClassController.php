@@ -14,11 +14,7 @@ class LearningClassController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $learningClasses = LearningClass::whereHas('users', function ($query){
-            $query->with(['roles']);
-        })->get();
-        
+    {   
         $learningClasses = LearningClass::with(['users' => function($query) {
             $query->with(['roles']);
         }, 'academicDisciplines'])->get();

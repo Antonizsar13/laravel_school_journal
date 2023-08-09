@@ -15,9 +15,10 @@ class PermissionController extends Controller
     public function index()
     {
         $users = User::with(['roles'])->get();
+        $roles = Role::all();
 
 
-        return view('permission.index', ['users' => $users]);
+        return view('permission.index', ['users' => $users, 'roles' => $roles]);
     }
 
     public function show(User $user)
@@ -40,7 +41,7 @@ class PermissionController extends Controller
             $user->assignRole($request->validated()['role']);
         }       
         
-
+        return back();
         return Redirect::route('permissions.show', $user->id)->with('status', 'profile-updated');
     }
 

@@ -38,7 +38,34 @@
                                     <td class="whitespace-nowrap px-6 py-4" >{{$user->father_name}}</td>
                                     <td class="whitespace-nowrap px-6 py-4" >{{$user->last_name}}</td>
                                     <td class="whitespace-nowrap px-6 py-4" >{{$user->email}}</td>
-                                    <td class="whitespace-nowrap px-6 py-4" >{{$user->roles[0]->name}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >
+                                        <form method="post" action="{{ route('permissions.update', $user) }}" class="mt-6 space-y-6">
+                                            @csrf
+                                            @method('patch')
+
+                                            <div>
+                                                <select id="role" name="role">
+                                                    @foreach ($roles as $roleList)
+
+                                                    <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="flex items-center gap-4">
+                                                <x-primary-button>{{ __('Save') }}</x-primary-button>
+                                            
+                                                @if (session('status') === 'profile-updated')
+                                                    <p
+                                                        x-data="{ show: true }"
+                                                        x-show="show"
+                                                        x-transition
+                                                        x-init="setTimeout(() => show = false, 2000)"
+                                                        class="text-sm text-gray-600"
+                                                    >{{ __('Saved.') }}</p>
+                                                @endif
+                                            </div>
+                                        </form>
+                                    </td>
                                     <td class="whitespace-nowrap px-6 py-4 text-xl" ><a href="/permissions/{{{$user->id}}}">&#9998</a></td>
                                 </tr>
                                 @endforeach

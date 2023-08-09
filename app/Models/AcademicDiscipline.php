@@ -18,8 +18,11 @@ class AcademicDiscipline extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function learningClasses()
-    {
+    public function learningClasses(){
         return $this->belongsToMany(LearningClass::class, 'a_discipline_l_class');
+    }
+
+    public function points(){
+        return $this->hasMany(Point::class);
     }
 }

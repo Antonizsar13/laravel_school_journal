@@ -58,4 +58,17 @@ class User extends Authenticatable
     public function academicDisciplines(){
         return $this->belongsToMany(AcademicDiscipline::class);
     }
+
+    public function learningClasses(){
+        return $this->belongsToMany(LearningClass::class);
+    }
+
+    public function points(){
+        return $this->hasMany(Point::class);
+    }
+
+    public function pointsDiscipline(AcademicDiscipline $discipline){
+
+        return ($this->hasMany(Point::class)->where('academic_discipline_id', '=', $discipline->id));
+    }
 }
