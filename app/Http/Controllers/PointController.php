@@ -123,4 +123,13 @@ class PointController extends Controller
     {
         return view('point.create_point_user', ['user' => $user, 'discipline' => $discipline]);
     }
+
+    public function myPoints()
+    {
+        $user = auth()->user();
+
+        $disciplines = $user->learningClasses()->first()->academicDisciplines()->get();
+
+        return view('point.my_points', ['user' => $user, 'disciplines' => $disciplines ]);
+    }
 }

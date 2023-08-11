@@ -38,6 +38,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('homework.index')" :active="request()->routeIs('homework.index')">
+                        {{ __('Homework') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                         {{ __('Profiles setting') }}
                     </x-nav-link>
@@ -50,7 +56,20 @@
                         {{ __('My discipline') }}
                     </x-nav-link>
                 </div>
-                
+                @endrole
+
+                @role('Student')
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('discipline.student.my_discipline_student')" :active="request()->routeIs('discipline.student.my_discipline_student')">
+                        {{ __('My discipline') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('point.my_points')" :active="request()->routeIs('point.my_points')">
+                        {{ __('My points') }}
+                    </x-nav-link>
+                </div>
                 @endrole
             </div>
             <!-- Settings Dropdown -->

@@ -10,7 +10,7 @@
             <form method="post" action="{{ route('discipline.update', $discipline)}}" class="mt-6 space-y-6">                
                 @csrf
                 @method('patch')
-
+w
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <div class="max-w-xl">
                         <x-input-label for="name" :value="__('Name')" />

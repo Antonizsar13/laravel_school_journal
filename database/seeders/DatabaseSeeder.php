@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
             $q->removeRole(ModelsRole::findByName('Guest'));
             $q->roles()->save(ModelsRole::findByName('Teacher'));
             $q->academicDisciplines()->save(AcademicDiscipline::inRandomOrder()->first());
-            $q->learningClasses()->save(LearningClass::inRandomOrder()->first());
         });
         User::factory(40)->create()->each(function ($q) {
             $q->removeRole(ModelsRole::findByName('Guest'));
@@ -46,7 +45,7 @@ class DatabaseSeeder extends Seeder
             $q->learningClasses()->save(LearningClass::inRandomOrder()->first());
         });
 
-        Point::factory(20)->create();
+        Point::factory(100)->create();
 
 
     }

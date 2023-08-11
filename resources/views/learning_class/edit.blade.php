@@ -53,7 +53,7 @@
 
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <div class="max-w-xl">
-                        <h3>Classes:</h3>
+                        <h3>Discipline:</h3>
                         @foreach ($academicDisciplines as $discipline)
                             <input type="checkbox" 
                                 id={{$discipline->id}} 

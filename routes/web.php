@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicDisciplineController;
+use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\LearningClassController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PointController;
@@ -33,15 +34,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::group(['middleware' => ['role:Super Admin|Admin|Student']], function () {
+        Route::get('/point/my_points', [PointController::class, 'myPoints'])->name('point.my_points');
+
+        Route::get('/discipline/my_discipline_student', [AcademicDisciplineController::class, 'myDisciplineStudent'])->name('discipline.student.my_discipline_student');
+    });
+    
     Route::group(['middleware' => ['role:Super Admin|Admin|Teacher']], function () {
         Route::get('discipline/my_discipline', [AcademicDisciplineController::class, 'myDiscipline'])->name('discipline.teacher.my_discipline');
         Route::get('discipline/my_discipline/{discipline}', [AcademicDisciplineController::class, 'myDisciplineClasses'])->name('discipline.teacher.my_discipline_classes');
-        Route::get('discipline/my_discipline/{discipline}/{learning_class}', [AcademicDisciplineController::class, 'myDisciplineClassStudents'])->name('discipline.teacher.my_discipline_class_students');
+        Route::get('discipline/my_discipline/{discipline}/{learning_cladiscipliness}', [AcademicDisciplineController::class, 'myDisciplineClassStudents'])->name('discipline.teacher.my_discipline_class_students');
 
         Route::get('/point/create_point_user/{discipline}/{user}', [PointController::class, 'createPointUser'])->name('point.create_point_user');
-
-
-        
     });
 
     Route::group(['middleware' => ['role:Super Admin|Admin']], function () {
@@ -62,6 +66,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('point', PointController::class);
+
+    Route::resource('homework', HomeworkController::class);
 });
 
 

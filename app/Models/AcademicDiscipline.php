@@ -25,4 +25,8 @@ class AcademicDiscipline extends Model
     public function points(){
         return $this->hasMany(Point::class);
     }
+
+    public function homeworks(){
+        return $this->hasMany(Homework::class);
+    }
 }

@@ -67,8 +67,7 @@ class User extends Authenticatable
         return $this->hasMany(Point::class);
     }
 
-    public function pointsDiscipline(AcademicDiscipline $discipline){
-
+    public function pointsDiscipline(AcademicDiscipline $discipline){//перегрузку функции сделать
         return ($this->hasMany(Point::class)->where('academic_discipline_id', '=', $discipline->id));
     }
 }

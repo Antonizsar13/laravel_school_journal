@@ -23,5 +23,9 @@ class LearningClass extends Model
     {
         return $this->belongsToMany(AcademicDiscipline::class, 'a_discipline_l_class');
     }
-    
+
+    public function homeworks()
+    {
+        return $this->hasMany(Homework::class);
+    }
 }
