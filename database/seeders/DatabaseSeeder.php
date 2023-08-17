@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\AcademicDiscipline;
+use App\Models\Homework;
 use App\Models\LearningClass;
 use App\Models\Point;
 use App\Models\User;
@@ -46,6 +47,8 @@ class DatabaseSeeder extends Seeder
         });
 
         Point::factory(100)->create();
+
+        Homework::factory(100)->create();
 
 
     }

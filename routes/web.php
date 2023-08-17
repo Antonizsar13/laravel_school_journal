@@ -6,7 +6,9 @@ use App\Http\Controllers\LearningClassController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScheduleController;
 use App\Models\LearningClass;
+use App\Models\Schedule;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,15 +39,18 @@ Route::middleware('auth')->group(function () {
     Route::group(['middleware' => ['role:Super Admin|Admin|Student']], function () {
         Route::get('/point/my_points', [PointController::class, 'myPoints'])->name('point.my_points');
 
-        Route::get('/discipline/my_discipline_student', [AcademicDisciplineController::class, 'myDisciplineStudent'])->name('discipline.student.my_discipline_student');
+        Route::get('/schedule/show_discipline', [ScheduleController::class, 'showDiscipline'])->name('schedule.show_discipline');
     });
     
     Route::group(['middleware' => ['role:Super Admin|Admin|Teacher']], function () {
         Route::get('discipline/my_discipline', [AcademicDisciplineController::class, 'myDiscipline'])->name('discipline.teacher.my_discipline');
         Route::get('discipline/my_discipline/{discipline}', [AcademicDisciplineController::class, 'myDisciplineClasses'])->name('discipline.teacher.my_discipline_classes');
-        Route::get('discipline/my_discipline/{discipline}/{learning_cladiscipliness}', [AcademicDisciplineController::class, 'myDisciplineClassStudents'])->name('discipline.teacher.my_discipline_class_students');
+        Route::get('discipline/my_discipline/{discipline}/{learning_class}', [AcademicDisciplineController::class, 'myDisciplineClassStudents'])->name('discipline.teacher.my_discipline_class_students');
 
         Route::get('/point/create_point_user/{discipline}/{user}', [PointController::class, 'createPointUser'])->name('point.create_point_user');
+        
+        Route::get('/schedule/classes', [ScheduleController::class, 'classes'])->name('schedule.classes');
+        Route::get('/schedule/show_class/{learning_class}', [ScheduleController::class, 'showClass'])->name('schedule.show_class');
     });
 
     Route::group(['middleware' => ['role:Super Admin|Admin']], function () {
@@ -63,11 +68,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/permissions/{user}', [PermissionController::class, 'show'])->name('permissions.show');
         Route::patch('/permissions/{user}', [PermissionController::class, 'update'])->name('permissions.update');
         Route::delete('/permissions/{user}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
     });
 
     Route::resource('point', PointController::class);
 
     Route::resource('homework', HomeworkController::class);
+
+    Route::resource('schedule', ScheduleController::class);
+    
 });
 
 

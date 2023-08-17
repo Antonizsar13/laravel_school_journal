@@ -22,6 +22,10 @@ class AcademicDiscipline extends Model
         return $this->belongsToMany(LearningClass::class, 'a_discipline_l_class');
     }
 
+    public function schedules(){
+        return $this->belongsToMany(Schedule::class)->withPivot('number');
+    }
+    
     public function points(){
         return $this->hasMany(Point::class);
     }
@@ -29,4 +33,5 @@ class AcademicDiscipline extends Model
     public function homeworks(){
         return $this->hasMany(Homework::class);
     }
+
 }

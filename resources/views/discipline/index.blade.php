@@ -14,11 +14,12 @@
                     <div class="overdlow-x-auto sm:-mx-6 lg:-mx-8" >
                     <div class="inline-block min-w-full py-2 sm:px-6 px-8">
 
-                        <div class="flex items-center gap-4 mt-2">
-                            <x-dropdown-link :href="route('discipline.create')">
+                        <div class="flex items-center mt-1">
+                            <x-dropdown-link  :href="route('discipline.create')">
                                 {{ __('Create new discipline') }}
                             </x-dropdown-link>
                         </div>    
+
                         <table class="min-w-full text-left text-sm font-light">
                             <thead class="border-b font-medium dark:border-neutral-500">
                                 <tr>

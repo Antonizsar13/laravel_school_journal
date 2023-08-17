@@ -44,6 +44,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('schedule.classes')" :active="request()->routeIs('schedule.classes')">
+                        {{ __('Schedules') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                         {{ __('Profiles setting') }}
                     </x-nav-link>
@@ -56,12 +62,18 @@
                         {{ __('My discipline') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('schedule.classes')" :active="request()->routeIs('schedule.classes')">
+                        {{ __('Schedules') }}
+                    </x-nav-link>
+                </div>
                 @endrole
 
                 @role('Student')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('discipline.student.my_discipline_student')" :active="request()->routeIs('discipline.student.my_discipline_student')">
-                        {{ __('My discipline') }}
+                    <x-nav-link :href="route('schedule.show_discipline')" :active="request()->routeIs('schedule.show_discipline')">
+                        {{ __('Schedule') }}
                     </x-nav-link>
                 </div>
 

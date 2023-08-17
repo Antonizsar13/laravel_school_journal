@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('New point') }}
+            {{ __('New homework') }}
         </h2>
     </x-slot>
 
@@ -16,7 +16,7 @@
                                 @csrf
 
                                 <div>
-                                    <x-input-label for="point" :value="__('Point')" />
+                                    <x-input-label for="task" :value="__('Task')" />
                                         <p class="mt-1 text-sm text-gray-600">
                                             {{ __("Set task") }}
                                         </p>
@@ -39,7 +39,7 @@
                                     @endforeach
                                 </select>
                                         {{-- сделать что бы список предметов менялся относительно выбранного класса  --}}
-                                <x-input-label for="academic_discipline_id" :value="__('Learning Classes')" />
+                                <x-input-label for="academic_discipline_id" :value="__('Academic discipline')" />
                                 <select id="academic_discipline_id" name="academic_discipline_id">
                                     @foreach ($disciplines as $discipline)
                                     <option type="text" value={{$discipline->id}}> {{$discipline->name}}</option>

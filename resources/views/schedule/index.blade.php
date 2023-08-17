@@ -34,7 +34,7 @@
                                 @foreach ($homeworks as $homework)
                                 <tr class="border-b dark:border-neutral-500">
                                     <td class="whitespace-nowrap px-6 py-4 font-medium" >{{$homework->id}}</td>
-                                    <td class=" px-6 py-4" >{{$homework->task}}</td>
+                                    <td class="whitespace-nowrap px-6 py-4" >{{$homework->task}}</td>
                                     <td class="px-6 py-4" >  
                                         {{$homework->learningClass->number . ' ' . $homework->learningClass->specialization }}  
                                     </td>

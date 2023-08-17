@@ -163,11 +163,5 @@ class AcademicDisciplineController extends Controller
         return view('discipline.teacher.my_discipline_class_students', ['students' => $students, 'discipline' => $discipline, 'learningClass' => $learningClass]);
     }
 
-    public function myDisciplineStudent(AcademicDiscipline $discipline, LearningClass $learningClass)
-    {
-
-        $disciplines = auth()->user()->learningClasses()->first()->academicDisciplines()->get();
-
-        return view('discipline.student.my_discipline_student', ['disciplines' => $disciplines,]);
-    }
+   
 }

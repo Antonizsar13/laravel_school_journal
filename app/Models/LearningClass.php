@@ -28,4 +28,9 @@ class LearningClass extends Model
     {
         return $this->hasMany(Homework::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
