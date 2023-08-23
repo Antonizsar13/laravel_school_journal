@@ -43,11 +43,11 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::group(['middleware' => ['role:Super Admin|Admin|Teacher']], function () {
-        Route::get('discipline/my_discipline', [AcademicDisciplineController::class, 'myDiscipline'])->name('discipline.teacher.my_discipline');
-        Route::get('discipline/my_discipline/{discipline}', [AcademicDisciplineController::class, 'myDisciplineClasses'])->name('discipline.teacher.my_discipline_classes');
-        Route::get('discipline/my_discipline/{discipline}/{learning_class}', [AcademicDisciplineController::class, 'myDisciplineClassStudents'])->name('discipline.teacher.my_discipline_class_students');
+        Route::get('academic_discipline/my_discipline', [AcademicDisciplineController::class, 'myDiscipline'])->name('academic_discipline.teacher.my_discipline');
+        Route::get('academic_discipline/my_discipline/{academic_discipline}', [AcademicDisciplineController::class, 'myDisciplineClasses'])->name('academic_discipline.teacher.my_discipline_classes');
+        Route::get('academic_discipline/my_discipline/{academic_discipline}/{learning_class}', [AcademicDisciplineController::class, 'myDisciplineClassStudents'])->name('academic_discipline.teacher.my_discipline_class_students');
 
-        Route::get('/point/create_point_user/{discipline}/{user}', [PointController::class, 'createPointUser'])->name('point.create_point_user');
+        Route::get('/point/create_point_user/{academic_discipline}/{user}', [PointController::class, 'createPointUser'])->name('point.create_point_user');
         
         Route::get('/schedule/classes', [ScheduleController::class, 'classes'])->name('schedule.classes');
         Route::get('/schedule/show_class/{learning_class}', [ScheduleController::class, 'showClass'])->name('schedule.show_class');
@@ -57,10 +57,10 @@ Route::middleware('auth')->group(function () {
         
         Route::get('/point/classes', [PointController::class, 'classes'])->name('point.classes');
         Route::get('/point/discipline_list/{learning_class}', [PointController::class, 'disciplineList'])->name('point.discipline_list');
-        Route::get('/point/discipline_list/{learning_class}/{discipline}', [PointController::class, 'disciplinePointsList'])->name('point.discipline_points_list');
-        Route::get('/point/edit_point_user/{discipline}/{user}', [PointController::class, 'editPointUser'])->name('point.edit_point_user');
+        Route::get('/point/discipline_list/{learning_class}/{academic_discipline}', [PointController::class, 'disciplinePointsList'])->name('point.discipline_points_list');
+        Route::get('/point/edit_point_user/{academic_discipline}/{user}', [PointController::class, 'editPointUser'])->name('point.edit_point_user');
 
-        Route::resource('discipline', AcademicDisciplineController::class);
+        Route::resource('academic_discipline', AcademicDisciplineController::class);
         Route::resource('learning_class', LearningClassController::class);
 
 

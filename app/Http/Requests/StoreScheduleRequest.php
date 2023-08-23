@@ -22,7 +22,7 @@ class StoreScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'learning_class_id' => ['int', 'max:255'],
+            'learning_class_id' => ['int'],
             'academic_discipline_id' => ['array'],
             'day_of_the_week' => ['string'],
         ];

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Points list') }}
+            {{ __('Students list') }}
         </h2>
     </x-slot>
     
@@ -16,6 +16,7 @@
                         <h2 class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
                             {{ __('Discipline: ' . $discipline->name) }}
                         </h2>
+
                     </header>
                     <div class="flex flex-col">
                         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -26,26 +27,29 @@
                                     class="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600">
                                     <tr>
                                         <th scope="col" class="px-6 py-4" >#</th>
-                                        <th scope="col" class="px-6 py-4" >Name</th>
-                                        <th scope="col" class="px-6 py-4" >Points</th>
-                                        <th scope="col" class="px-6 py-4" >Edit</th>
-                                  </tr>
+                                        <th scope="col" class="px-6 py-4" >First name</th>
+                                        <th scope="col" class="px-6 py-4">Fater name</th>
+                                        <th scope="col" class="px-6 py-4">Last name</th>
+                                        <th scope="col" class="px-6 py-4">Points</th>
+                                        <th scope="col" class="px-6 py-4">Set point</th>
+                                    </tr>
                                   </thead>
                                   <tbody>
-                                    @foreach ($studentsClass as $student)
+                                    @foreach ($students as $student)
                                     <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
-                                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{$student->id}}</td>
-                                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{$student->last_name . ' ' . $student->first_name}}</td>
-                                        <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                        <td class="whitespace-nowrap px-6 py-4 font-medium" >{{$student->id}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >{{$student->first_name}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >{{$student->father_name}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >{{$student->last_name}}</td>
+                                        <td class="whitespace-normal px-6 py-4" >
                                             @foreach($student->points as $point)
-                                                {{$point->point . ', '}}
+                                            {{$point->point}}
                                             @endforeach
                                         </td>
-                                        <td class="whitespace-nowrap px-6 py-4">
-                                            <a href="{{route('point.edit_point_user', [$discipline, $student])}}"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                                THIS
-                                            </a>                                      
-                                        </td>
+                                      <td class="whitespace-nowrap px-6 py-4">
+                                          <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                                          href="{{route('point.create_point_user', [$discipline, $student])}}">SET</a>                                     
+                                      </td>
                                     </tr>
                                     @endforeach
                                   </tbody>
@@ -53,7 +57,7 @@
                               </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                     <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onclick="history.back()">Back</button>  
                 </div>
             </div>

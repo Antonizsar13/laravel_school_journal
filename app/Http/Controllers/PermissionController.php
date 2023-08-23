@@ -23,7 +23,7 @@ class PermissionController extends Controller
 
     public function show(User $user)
     {
-        $role = $user->roles()->get();
+        $role = $user->roles;
 
         $roles = Role::all();
         

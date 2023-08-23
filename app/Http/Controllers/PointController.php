@@ -9,6 +9,7 @@ use App\Models\LearningClass;
 use App\Models\Point;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PointController extends Controller
 {
@@ -84,7 +85,7 @@ class PointController extends Controller
     }
 
     public function classes(){
-        $learningClasses = LearningClass::with(['users' => function ($query) {
+        $learningClasses = LearningClass::with(['academicDisciplines', 'users' => function ($query) {
             $query->with(['roles']);
         }])->get();
 
@@ -92,44 +93,57 @@ class PointController extends Controller
     }
 
     public function disciplineList(LearningClass $learningClass){
-        $disciplines = $learningClass->academicDisciplines()->get();
+        $disciplines = $learningClass->academicDisciplines()->with(['users' => function ($query) {
+            $query->whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            });
+        }])->get();
 
         return view('point.discipline_list', ['learningClass' => $learningClass,'disciplines' => $disciplines]);
     }
 
-    public function disciplinePointsList(LearningClass $learningClass, AcademicDiscipline $discipline)
+    public function disciplinePointsList(LearningClass $learningClass, AcademicDiscipline $academicDiscipline)
     {
-        $users = $learningClass->users()->get();
 
-        $studentsClass = array();
-        foreach ($users as $user) {
-            if (($user['roles'][0]['name']) == 'Student'){
-                array_push($studentsClass, $user);
-                //убрать из блейда оценки и сюда
-            }
+        $studentsClass = $learningClass->users()->with(['roles' => function ($query) {
+            $query->where('name', 'student');
+        },
+        'points' => function($query) use (&$academicDiscipline){
+            $query->where('academic_discipline_id', $academicDiscipline->id );
         }
+        ])->get();
+
         
-        return view('point.discipline_points_list', ['learningClass' => $learningClass,'discipline' => $discipline, 'studentsClass' => $studentsClass]);
+
+        
+        return view('point.discipline_points_list', ['learningClass' => $learningClass,'discipline' => $academicDiscipline, 'studentsClass' => $studentsClass]);
     }
 
-    public function editPointUser(AcademicDiscipline $discipline, User $user)
+    public function editPointUser(AcademicDiscipline $academicDiscipline, User $user)
     {
-        $points = $user->pointsDiscipline($discipline)->get();
+        $points = $user->pointsDiscipline($academicDiscipline)->get();
         
-        return view('point.edit_point_user', ['user' => $user, 'points' => $points, 'discipline' => $discipline]);
+        return view('point.edit_point_user', ['user' => $user, 'points' => $points, 'discipline' => $academicDiscipline]);
     }
 
-    public function createPointUser(AcademicDiscipline $discipline, User $user)
+    public function createPointUser(AcademicDiscipline $academicDiscipline, User $user)
     {
-        return view('point.create_point_user', ['user' => $user, 'discipline' => $discipline]);
+
+        return view('point.create_point_user', ['user' => $user, 'discipline' => $academicDiscipline]);
     }
 
     public function myPoints()
     {
         $user = auth()->user();
 
-        $disciplines = $user->learningClasses()->first()->academicDisciplines()->get();
+        $disciplines = $user->learningClasses()->first()
+            ->academicDisciplines()
+            ->with('points', function($query) use (&$user) {
+                $query->where('user_id', $user->id);
+                // $query->addSelect('avg(point)');
+            })
+            ->get();
 
-        return view('point.my_points', ['user' => $user, 'disciplines' => $disciplines ]);
+        return view('point.my_points', ['disciplines' => $disciplines ]);
     }
 }

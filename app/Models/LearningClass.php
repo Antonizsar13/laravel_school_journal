@@ -14,23 +14,19 @@ class LearningClass extends Model
         'specialization',
     ];
 
-    public function users()
-    {
+    public function users(){
         return $this->belongsToMany(User::class);
     }
 
-    public function academicDisciplines()
-    {
+    public function academicDisciplines(){
         return $this->belongsToMany(AcademicDiscipline::class, 'a_discipline_l_class');
     }
 
-    public function homeworks()
-    {
+    public function homeworks(){
         return $this->hasMany(Homework::class);
     }
 
-    public function schedules()
-    {
+    public function schedules(){
         return $this->hasMany(Schedule::class);
     }
 }

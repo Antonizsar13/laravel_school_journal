@@ -22,7 +22,7 @@ class StorePointRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'point' => ['int', 'max:255'],
+            'point' => ['int', 'min:0', 'max:255'],
             'academic_discipline_id' => ['int'],
             'user_id' => ['int'],
         ];

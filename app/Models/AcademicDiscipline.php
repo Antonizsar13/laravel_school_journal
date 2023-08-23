@@ -23,7 +23,7 @@ class AcademicDiscipline extends Model
     }
 
     public function schedules(){
-        return $this->belongsToMany(Schedule::class)->withPivot('number');
+        return $this->belongsToMany(Schedule::class, 'schedule_academic_dicipline')->withPivot('number');
     }
     
     public function points(){

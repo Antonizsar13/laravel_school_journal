@@ -1,47 +1,57 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Discipline list class id = '. $learningClass->id) }}
+            {{ __('Discipline list') }}
         </h2>
     </x-slot>
-
+    
    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    
-                    <div class="flex flex-col" >
-                    <div class="overdlow-x-auto sm:-mx-6 lg:-mx-8" >
-                    <div class="inline-block min-w-full py-2 sm:px-6 px-8">    
-                        <table class="min-w-full text-left text-sm font-light">
-                            <thead class="border-b font-medium dark:border-neutral-500">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4" >#</th>
-                                    <th scope="col" class="px-6 py-4" >Name</th>
-                                    <th scope="col" class="px-6 py-4" >Teacher</th>
-                                    <th scope="col" class="px-6 py-4" >Set</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($disciplines as $discipline)
-                                <tr class="border-b dark:border-neutral-500">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{$discipline->id}}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{$discipline->name}}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                        @foreach ($discipline->users as $teacher)
-                                            @if(($teacher['roles'][0]['name']) == 'Teacher')
-                                                {{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name .', '}}   
-                                            @endif
-                                        @endforeach 
-                                    </td>
-                                    <td class="whitespace-nowrap px-6 py-4 text-xl" ><a href="{{route('point.discipline_points_list', [$learningClass, $discipline])}}">THIS</a></td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    </div>
-                    </div>
+                    <header>
+                        <h2 class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                            {{ __('Class: ' . $learningClass->number . ' '. $learningClass->specialization)}}
+                        </h2>
+                    </header>
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                              <div class="overflow-hidden">
+                                <table class="min-w-full text-left text-sm font-light">
+                                  <thead
+                                    class="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4" >#</th>
+                                        <th scope="col" class="px-6 py-4" >Name</th>
+                                        <th scope="col" class="px-6 py-4" >Teachers</th>
+                                        <th scope="col" class="px-6 py-4" >Set</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    @foreach ($disciplines as $discipline)
+                                    <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
+                                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{$discipline->id}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{$discipline->name}}</td>
+                                        <td class="px-6 py-4 font-medium">
+                                            @foreach ($discipline->users as $teacher)
+                                                    {{$teacher->last_name . ' ' . $teacher->first_name . ' ' . $teacher->father_name .', '}} 
+                                            @endforeach 
+                                        </td>
+                                        <td class="whitespace-nowrap px-6 py-4">
+                                            <a href="{{route('point.discipline_points_list', [$learningClass, $discipline])}}"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                                THIS
+                                            </a>                                      
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onclick="history.back()">Back</button>  
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@ class Schedule extends Model
         return $this->belongsToMany(AcademicDiscipline::class, 'schedule_academic_dicipline')->withPivot('number')->orderBy('schedule_academic_dicipline.number');
     }
 
-    public function larningClass(){
+    public function learningClass(){
         return $this->belongsTo(LearningClass::class);
     }
 }

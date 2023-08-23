@@ -15,7 +15,7 @@ class HomeworkController extends Controller
      */
     public function index()
     {
-        $homeworks = Homework::all();   
+        $homeworks = Homework::with('learningClass','academicDiscipline')->get();   
 
         return view('homework.index', ['homeworks' => $homeworks]);
     }
@@ -39,7 +39,7 @@ class HomeworkController extends Controller
     {
         Homework::create($request->validated());
 
-        return back();
+        return redirect('homework');
     }
 
     /**
@@ -55,6 +55,7 @@ class HomeworkController extends Controller
      */
     public function edit(Homework $homework)
     {
+
         $learningClasses = LearningClass::all();
         $disciplies = AcademicDiscipline::all();
         
@@ -69,7 +70,8 @@ class HomeworkController extends Controller
     {
         $homework->fill($request->validated());
         $homework->save();
-        return back();
+        
+        return redirect('homework');
     }
 
     /**
@@ -78,6 +80,6 @@ class HomeworkController extends Controller
     public function destroy(Homework $homework)
     {
         $homework->delete();
-        return HomeworkController::index();
+        return redirect('homework');
     }
 }

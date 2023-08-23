@@ -16,13 +16,11 @@ class Homework extends Model
         'academic_discipline_id',
     ];
 
-    public function learningClass()
-    {
+    public function learningClass(){
         return $this->belongsTo(LearningClass::class);
     }
 
-    public function academicDiscipline()
-    {
+    public function academicDiscipline(){
         return $this->belongsTo(AcademicDiscipline::class);
     }
 }

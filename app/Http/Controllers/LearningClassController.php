@@ -35,7 +35,6 @@ class LearningClassController extends Controller
             $query->where('name', 'student');
         })->get();
 
-
         $disciplines = AcademicDiscipline::all();
 
         return view('learning_class.create', ['teachers' => $teachers, 'students' => $students, 'disciplines' => $disciplines]);
@@ -48,16 +47,18 @@ class LearningClassController extends Controller
     {   
         $newLearningClasses = LearningClass::create($request->validated());
 
+        if (array_key_exists('students', $request->validated()))
         foreach ($request->validated()['students'] as $id) {
             $user = User::find($id);
             $newLearningClasses->users()->attach($user);
         }
-
+        
+        if (array_key_exists('disciplines', $request->validated()))
         foreach ($request->validated()['disciplines'] as $id) {
             $discipline = AcademicDiscipline::find($id);
             $newLearningClasses->academicDisciplines()->attach($discipline);
         }
-        return LearningClassController::index();
+        return redirect('learning_class');
     }
 
     /**
@@ -73,17 +74,15 @@ class LearningClassController extends Controller
      */
     public function edit(LearningClass $learningClass)
     {
-        $usersClass = $learningClass->users()->get(); //все но можно только учителе сделать потом
+        $studentsClass = $learningClass->users()->whereHas('roles', function ($query) {
+            $query->where('name', 'student');
+        })->get();
 
-        $studentsClass = array();
+        $teacherClass = $learningClass->users()->whereHas('roles', function ($query) {
+            $query->where('name', 'teacher');
+        })->get()[0];
 
-        $teacherClass = 0;
-        foreach ($usersClass as $user) {
-            if(($user['roles'][0]['name']) == 'Teacher')
-                $teacherClass = $user->id;
-            else
-                array_push($studentsClass, $user->id);        
-        }
+        
 
         $teachers = User::whereHas('roles', function ($query) {
             $query->where('name', 'teacher');
@@ -95,7 +94,7 @@ class LearningClassController extends Controller
 
         $academicDisciplines = AcademicDiscipline::all();
 
-        $disciplinesClass = $learningClass->academicDisciplines()->get();
+        $disciplinesClass = $learningClass->academicDisciplines;
 
         return view('learning_class.edit', ['learningClass' => $learningClass,
                                             'teachers' => $teachers, 
@@ -103,7 +102,7 @@ class LearningClassController extends Controller
                                             'teacherClass' => $teacherClass, 
                                             'studentsClass' => $studentsClass,
                                             'disciplinesClass'=> $disciplinesClass,
-                                            'academicDisciplines' => $academicDisciplines]);
+                                            'disciplines' => $academicDisciplines]);
     }
 
     /**
@@ -132,7 +131,7 @@ class LearningClassController extends Controller
         }
         $learningClass->academicDisciplines()->sync($disciplines);
 
-        return LearningClassController::index();
+        return redirect('learning_class');
     }
 
     /**
@@ -140,10 +139,12 @@ class LearningClassController extends Controller
      */
     public function destroy(LearningClass $learningClass)
     {
-        $learningClass->users()->sync(array()); //костыль
-        $learningClass->academicDisciplines()->sync(array()); //костыль
+        // $learningClass->users()->sync(array()); //костыль
+        // $learningClass->academicDisciplines()->sync(array()); //костыль
 
-        $learningClass->delete();
-        return LearningClassController::index();
+        // $learningClass->delete();
+
+        //сделать софт делете
+        return redirect('learning_class');
     }
 }

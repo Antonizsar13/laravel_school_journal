@@ -22,7 +22,7 @@ class StoreLearningClassRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => ['integer'],
+            'number' => ['integer', 'min:1', 'max:12'],
             'specialization' => ['string', 'min:2', 'max:200'],
             'students' => ['array'],
             'disciplines' => ['array'],

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreHomeworkRequest extends FormRequest
+class UpdateScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,7 @@ class StoreHomeworkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task' => ['string', 'min:2', 'max:255'],
-            'date' => ['date'],
-            'learning_class_id'  => ['integer'],
-            'academic_discipline_id'  => ['integer'],
+            'academic_discipline_id' => ['array'],
         ];
     }
 }

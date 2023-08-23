@@ -20,7 +20,7 @@
 
                 @role('Super Admin|Admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('discipline.index')" :active="request()->routeIs('discipline.index')">
+                    <x-nav-link :href="route('academic_discipline.index')" :active="request()->routeIs('academic_discipline.index')">
                         {{ __('Discipline') }}
                     </x-nav-link>
                 </div>
@@ -58,7 +58,7 @@
 
                 @role('Teacher')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('discipline.teacher.my_discipline')" :active="request()->routeIs('discipline.teacher.my_discipline')">
+                    <x-nav-link :href="route('academic_discipline.teacher.my_discipline')" :active="request()->routeIs('academic_discipline.teacher.my_discipline')">
                         {{ __('My discipline') }}
                     </x-nav-link>
                 </div>

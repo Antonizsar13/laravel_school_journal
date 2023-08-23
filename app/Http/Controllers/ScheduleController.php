@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreScheduleRequest;
+use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\AcademicDiscipline;
+use App\Models\Homework;
 use App\Models\LearningClass;
 use App\Models\Schedule;
 use Dflydev\DotAccessData\Data;
@@ -27,12 +29,13 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        $learningClasses = LearningClass::all();
-        $disciplines = AcademicDiscipline::all(); //сделать тут и в блейд что бы менялись относительно дня класса
+        $learningClasses = LearningClass::with('academicDisciplines')->get();
+
+        $academicDsciplines = AcademicDiscipline::all();
 
         $daysOfTheWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 
-        return (view('schedule.create', ['learningClasses' => $learningClasses, 'disciplines' => $disciplines, 'daysOfTheWeek' => $daysOfTheWeek]));
+        return (view('schedule.create', ['learningClasses' => $learningClasses, 'daysOfTheWeek' => $daysOfTheWeek, 'academicDisciplines' => $academicDsciplines]));
     }
 
     /**
@@ -40,14 +43,15 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
-        $schedule = Schedule::firstOrCreate([
-            'day_of_the_week' => $request->get('day_of_the_week'),
-            'learning_class_id' => $request->get('learning_class_id')
-        ]
+        $schedule = Schedule::firstOrCreate(
+            [
+                'day_of_the_week' => $request->get('day_of_the_week'),
+                'learning_class_id' => $request->get('learning_class_id')
+            ]
         );
 
-        if (array_key_exists('academic_discipline_id', $request->validated()))
-            foreach ($request['academic_discipline_id'] as $number => $academicDisciplineId)
+        if (array_key_exists('academic_discipline_id', $request->validated())) {
+            foreach ($request->validated()['academic_discipline_id'] as $number => $academicDisciplineId)
                 DB::table('schedule_academic_dicipline')->upsert(
                     [
                         'number' => $number + 1,
@@ -57,8 +61,10 @@ class ScheduleController extends Controller
                     ['schedule_id', 'number'],
                     ['academic_discipline_id']
                 );
+            DB::table('schedule_academic_dicipline')->where('schedule_id', $schedule->id)->where('number', '>', count($request->validated()['academic_discipline_id']))->delete();
+        }
 
-        return back();
+        return redirect('schedule/classes');
     }
 
     /**
@@ -66,7 +72,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        
     }
 
     /**
@@ -74,15 +80,31 @@ class ScheduleController extends Controller
      */
     public function edit(Schedule $schedule)
     {
-        //
+        $disciplines = $schedule->learningClass->academicDisciplines;
+
+        return (view('schedule.edit', ['schedule' => $schedule, 'disciplines' => $disciplines]));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Schedule $schedule)
+    public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
-        //
+        if (array_key_exists('academic_discipline_id', $request->validated()))
+        {
+            foreach ($request->validated()['academic_discipline_id'] as $number => $academicDisciplineId)
+                DB::table('schedule_academic_dicipline')->upsert(
+                    [
+                        'number' => $number + 1,
+                        'academic_discipline_id' => $academicDisciplineId,
+                        'schedule_id' => $schedule->id,
+                    ],
+                    ['schedule_id', 'number'],
+                    ['academic_discipline_id']
+                );
+            DB::table('schedule_academic_dicipline')->where('schedule_id', $schedule->id)->where('number', '>', count($request->validated()['academic_discipline_id']))->delete();
+        }
+        return redirect('schedule/classes');
     }
 
     /**
@@ -90,13 +112,16 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        // soft
+        return redirect('schedule/classes');
     }
 
     public function classes()
     {
-        $learningClasses = LearningClass::with(['users' => function ($query) {
-            $query->with(['roles']);
+        $learningClasses = LearningClass::with(['academicDisciplines', 'users' => function ($query) {
+            $query->whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            });
         }])->get();
 
         return view('schedule.classes', ['learningClasses' => $learningClasses]);
@@ -104,20 +129,15 @@ class ScheduleController extends Controller
 
     public function showClass(LearningClass $learningClass)
     {
-        $schedules = $learningClass->schedules();
-
-        $schedules = $schedules->with(['academicDisciplines'])->get();
+        $schedules = $learningClass->schedules()->with(['academicDisciplines'])->get();
 
         return view('schedule.showClass', ['schedules' => $schedules]);
     }
 
     public function showDiscipline()
     {
-        $schedules = auth()->user()->learningClasses()->get()[0]->schedules();
-
-        $schedules = $schedules->with(['academicDisciplines'])->get();
+        $schedules = auth()->user()->learningClasses[0]->schedules()->with(['academicDisciplines'])->get();
 
         return view('schedule.showClass', ['schedules' => $schedules]);
     }
-
 }
