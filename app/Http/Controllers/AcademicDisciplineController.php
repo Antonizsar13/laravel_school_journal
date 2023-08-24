@@ -16,7 +16,6 @@ class AcademicDisciplineController extends Controller
      */
     public function index()
     {
-
         $academicDiscipline = AcademicDiscipline::with('users', 'learningClasses')->get();
 
         return view('academic_discipline.index', ['disciplines' => $academicDiscipline]);

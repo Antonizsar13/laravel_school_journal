@@ -18,11 +18,12 @@ class HomeworkFactory extends Factory
      */
     public function definition(): array
     {
+        $learningClass = LearningClass::inRandomOrder()->first();
         return [
             'task' => fake()->text(),
             'date' => fake()->date(),
-            'learning_class_id' => $class = LearningClass::inRandomOrder()->first()->id,
-            'academic_discipline_id' => AcademicDiscipline::inRandomOrder()->first()->id,
+            'learning_class_id' =>  $learningClass->id,
+            'academic_discipline_id' => $learningClass->academicDisciplines()->inRandomOrder()->first()->id,
         
         ];
     }

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\LearningClass>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shedule>
  */
-class LearningClassFactory extends Factory
+class ScheduleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,9 +16,11 @@ class LearningClassFactory extends Factory
      */
     public function definition(): array
     {
+        // 'day_of_the_week',
+        // 'learning_class_id',
+
         return [
-            'number' => fake()->biasedNumberBetween(1,11),
-            'specialization' => fake()->word(),
+            //
         ];
     }
 }

@@ -13,6 +13,7 @@ use Database\Seeders\Users\CreateRoleAdmin;
 use Database\Seeders\Users\CreateRoleGuest;
 use Database\Seeders\Users\CreateRoleStudent;
 use Database\Seeders\Users\CreateRoleTeacher;
+use Database\Seeders\Users\CreateSuperAdmin;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role as ModelsRole;
 
@@ -27,24 +28,50 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateRoleStudent::class);
         $this->call(CreateRoleTeacher::class);
         $this->call(CreateRoleAdmin::class);
-        
-        AcademicDiscipline::factory(20)->create();
-        LearningClass::factory(20)->create()->each(function($q){
-            for($i=0; $i<=rand(0,3); $i++)
-            $q->academicDisciplines()->save(AcademicDiscipline::inRandomOrder()->first());
-        });
+        //дальше убрать 
+        $this->call(CreateSuperAdmin::class);
 
         User::factory(10)->create();
         User::factory(20)->create()->each(function ($q) {
             $q->removeRole(ModelsRole::findByName('Guest'));
             $q->roles()->save(ModelsRole::findByName('Teacher'));
-            $q->academicDisciplines()->save(AcademicDiscipline::inRandomOrder()->first());
         });
-        User::factory(40)->create()->each(function ($q) {
+
+        User::factory(60)->create()->each(function ($q) {
             $q->removeRole(ModelsRole::findByName('Guest'));
             $q->roles()->save(ModelsRole::findByName('Student'));
-            $q->learningClasses()->save(LearningClass::inRandomOrder()->first());
         });
+
+
+        AcademicDiscipline::factory(60)->create()->each(function($q){
+            $teachers = User::whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            })->inRandomOrder()->get();
+
+            for($i=0; $i<=rand(0,5); $i++)
+                $q->users()->save($teachers[$i]);
+        });
+
+
+        LearningClass::factory(20)->create()->each(function($q){
+            
+            $disciplines = AcademicDiscipline::inRandomOrder()->get();
+            for($i=0; $i<=rand(0,10); $i++)
+                $q->academicDisciplines()->save($disciplines[$i]);
+            
+            $q->users()->save(User::whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            })->inRandomOrder()->first());
+
+            $students = User::whereHas('roles', function ($query) {
+                $query->where('name', 'student');
+            })->inRandomOrder()->get();
+
+            for ($i = 0; $i <= rand(0, 10); $i++)
+            $q->users()->save($students[$i]);
+
+        });
+       
 
         Point::factory(100)->create();
 
