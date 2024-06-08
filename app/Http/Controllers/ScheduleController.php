@@ -72,7 +72,6 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        
     }
 
     /**
@@ -90,8 +89,7 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
-        if (array_key_exists('academic_discipline_id', $request->validated()))
-        {
+        if (array_key_exists('academic_discipline_id', $request->validated())) {
             foreach ($request->validated()['academic_discipline_id'] as $number => $academicDisciplineId)
                 DB::table('schedule_academic_dicipline')->upsert(
                     [
@@ -131,13 +129,17 @@ class ScheduleController extends Controller
     {
         $schedules = $learningClass->schedules()->with(['academicDisciplines'])->get();
 
-        return view('schedule.showClass', ['schedules' => $schedules]);
+        $daysOfTheWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+
+        return view('schedule.showClass', ['schedules' => $schedules, 'daysOfTheWeek' => $daysOfTheWeek]);
     }
 
     public function showDiscipline()
     {
         $schedules = auth()->user()->learningClasses[0]->schedules()->with(['academicDisciplines'])->get();
 
-        return view('schedule.showClass', ['schedules' => $schedules]);
+        $daysOfTheWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+
+        return view('schedule.showClass', ['schedules' => $schedules, 'daysOfTheWeek' => $daysOfTheWeek]);
     }
 }

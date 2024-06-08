@@ -27,6 +27,8 @@
                                   </thead>
                                   <tbody>
                                     @foreach ($users as $user)
+                                    @if($user->roles[0]->name == 'Super Admin')
+                                    @role('Super Admin')
                                     <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
                                       <td class="whitespace-nowrap px-6 py-4 font-medium" >{{$user->id}}</td>
                                         <td class="whitespace-nowrap px-6 py-4" >{{$user->first_name}}</td>
@@ -40,8 +42,13 @@
                                                 <div>
                                                     <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                         @foreach ($roles as $roleList)
-
-                                                        <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                                                        @if($roleList->name == 'Super Admin')
+                                                            @role('Super Admin')
+                                                            <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                                                            @endrole
+                                                        @else
+                                                            <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                                                        @endif
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -56,6 +63,43 @@
                                             </a>                                      
                                         </td>
                                     </tr>
+                                    @endrole
+                                    @else
+                                    <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
+                                      <td class="whitespace-nowrap px-6 py-4 font-medium" >{{$user->id}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >{{$user->first_name}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >{{$user->father_name}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >{{$user->last_name}}</td>
+                                        <td class="whitespace-nowrap px-6 py-4" >
+                                            <form method="post" action="{{ route('permissions.update', $user) }}">
+                                                @csrf
+                                                @method('patch')
+
+                                                <div>
+                                                    <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        @foreach ($roles as $roleList)
+                                                        @if($roleList->name == 'Super Admin')
+                                                            @role('Super Admin')
+                                                            <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                                                            @endrole
+                                                        @else
+                                                            <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                                                        @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="flex items-center gap-4 mt-2">
+                                                    <x-primary-button>{{ __('Save') }}</x-primary-button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="whitespace-nowrap px-6 py-4">
+                                            <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"  href="{{route('permissions.show', $user)}}">
+                                                &#9998
+                                            </a>                                      
+                                        </td>
+                                    </tr>
+                                    @endif
                                     @endforeach
                                   </tbody>
                                 </table>

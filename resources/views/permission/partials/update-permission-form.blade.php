@@ -20,8 +20,13 @@
         <div>
             <select id="role" name="role"  <select id="role" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">>
                 @foreach ($roles as $roleList)
-                
-                <option  type="text" @if($role[0]->name === $roleList->name) selected @endif> {{$roleList->name}}</option>
+                    @if($roleList->name == 'Super Admin')
+                        @role('Super Admin')
+                        <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                        @endrole
+                    @else
+                        <option  type="text" @if($user->roles[0]->name == $roleList->name) selected @endif> {{$roleList->name}}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

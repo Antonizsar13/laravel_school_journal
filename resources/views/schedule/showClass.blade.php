@@ -8,43 +8,47 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @foreach($schedules as $schedule)
+            @foreach($daysOfTheWeek as $day)
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <h3 class="text-3xl font-bold dark:text-white">{{$schedule->day_of_the_week}}</h3>
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                        Number
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Discipline
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($schedule->academicDisciplines as $discipline)
-                                <tr class="border-b border-gray-200 dark:border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                        {{$discipline->pivot->number}}
-                                    </th>
-                                    <td class="px-6 py-4">
-                                        {{$discipline->name}}
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @role('Admin|Super Admin')
-                        <div class="flex items-center gap-4 m-3">
-                            <a href="{{route('schedule.edit', $schedule)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                {{ __('Edit schedule') }}
-                            </a>
+                    <h3 class="text-3xl font-bold dark:text-white mb-8">{{$day}}</h3>
+                    @foreach($schedules as $schedule)
+                    @if($day == $schedule->day_of_the_week)
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                            Number
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Discipline
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($schedule->academicDisciplines as $discipline)
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                            {{$discipline->pivot->number}}
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            {{$discipline->name}}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @role('Admin|Super Admin')
+                            <div class="flex items-center gap-4 m-3">
+                                <a href="{{route('schedule.edit', $schedule)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                    {{ __('Edit schedule') }}
+                                </a>
+                            </div>
+                            @endrole
                         </div>
-                        @endrole
-                    </div>
+                    @endif
+                    @endforeach
                 </div>
             </div>
                 @endforeach            
